@@ -42,12 +42,6 @@ int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar) {
 
 void hapusKendaraanBaru() {
     cout << "\n=== CHECK OUT PARKIR ===\n";
-
-    if (head == NULL) {
-        cout << "Parkiran kosong!\n";
-        return;
-    }
-
     string plat;
     cout << "Masukkan plat nomor: ";
     cin >> plat;
@@ -67,7 +61,6 @@ void hapusKendaraanBaru() {
 
     int tarif = (target->jenisKendaraan == "Motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
-
 
     cout << "\n========== STRUK PARKIR ==========\n";
     cout << "ID Parkir : " << target->idParkir << endl;
