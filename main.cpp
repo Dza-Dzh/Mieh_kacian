@@ -36,20 +36,7 @@ dataKendaraan* cariNode(string plat) {
 }
 
 int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar) {
-    int masukMenit = masuk.jam * 60 + masuk.menit;
-    int keluarMenit = jamKeluar * 60 + menitKeluar;
 
-    // jika lewat tengah malam
-    if (keluarMenit < masukMenit)
-        keluarMenit += 24 * 60;
-
-    int selisih = keluarMenit - masukMenit;
-
-    int jam = selisih / 60;
-    if (selisih % 60 != 0) jam++; 
-    if (jam == 0) jam = 1;        
-
-    return jam;
 }
 
 
