@@ -3,7 +3,7 @@
 
 using namespace std;
 
-string jenisKendaraan[2] = {"mobil", "motor"};
+string jenisKendaraan[2] = {"motor", "mobil"};
 
 struct waktu{
     int jam;
@@ -12,7 +12,7 @@ struct waktu{
 
 struct dataKendaraan{
     string platNomor;
-    string jenisKendaraan;
+    string jenis;
     int idParkir;
     waktu masuk;
     dataKendaraan* next;
@@ -47,53 +47,100 @@ int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar){
     return durasiJam;
 }
 
+dataKendaraan *head = NULL;
 
-void tambahKendaraan(dataKendaraan parkir[], int &jumlah){
+void tambahKendaraan(){
+    dataKendaraan *node = new dataKendaraan();
+
+    cout << "=== INPUT KENDARAAN MASUK ===" << endl;
     cout << "Masukkan plat nomor kendaraan (Contoh: ABC 1234 XYZ): ";
-    cin >> parkir[jumlah].platNomor;
+    cin >> node->platNomor;
 
     cout << "Pilih jenis kendaraan : " << endl;
-    int pilih;
+    int pilihanJenis;
     cout << "1. Motor" << endl;
     cout << "2. Mobil" << endl;
     cout << "Pilih jenis kendaraan (1-2): ";
-    cin >> pilih;
+    cin >> pilihanJenis;
 
-    while(pilih < 1 or pilih > 2){
-        cout << "Pilihan tidak valid! Coba lagi." << endl;
-        cout << "Pilih jenis kendaraan (1-2): ";
-        cin >> pilih;
+    if (pilihanJenis == 1 or pilihanJenis == 2){
+        node->jenis = jenisKendaraan[pilihanJenis - 1];
     }
-    parkir[jumlah].jenisKendaraan = jenisKendaraan[pilih - 1];
-
-    parkir[jumlah].idParkir = generateID();
-    cout << "ID parkir: " << parkir[jumlah].idParkir << endl;
+    else{
+        cout << "Input tidak valid" << endl;
+    }
 
     cout << "Masukkan waktu jam masuk (0-23): ";
-    int pilihanJamParkir;
-    cin >> pilihanJamParkir;
+    int inputJam;
+    cin >> inputJam;
 
-    if(pilihanJamParkir >= 0 && pilihanJamParkir <= 23){
-        parkir[jumlah].masuk.jam = pilihanJamParkir;
+    if(inputJam >= 0 && inputJam <= 23){
+        node->masuk.jam = inputJam;
     } else {
         cout << "Jam tidak valid! Coba lagi." << endl;
         return;
     }
 
     cout << "Masukkan waktu menit masuk (0-59): ";
-    int pilihanMenitParkir;
-    cin >> pilihanMenitParkir;
+    int inputMenit;
+    cin >> inputMenit;
 
-    if(pilihanMenitParkir >= 0 && pilihanMenitParkir <= 59){
-        parkir[jumlah].masuk.menit = pilihanMenitParkir;
+    if(inputMenit >= 0 && inputMenit <= 59){
+        node->masuk.menit = inputMenit;
     } else {
         cout << "Menit tidak valid! Coba lagi." << endl;
         return;
+    };
+
+    node->idParkir = generateID();
+    node->next = NULL;
+
+    if (head == NULL){
+        head = node;
+    }
+    else {
+        dataKendaraan *temp = head;
+        while (temp->next != NULL){
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+    cout << "Data Kendaraan berhasil ditambahkan\n";
+} 
+
+void daftarKendaraan() {
+    cout << "\n=== DAFTAR KENDARAAN TERPARKIR ===\n";
+    if (head == NULL) {
+        cout << "Parkiran kosong.\n";
+        return;
     }
 
-    jumlah++;
+    dataKendaraan* temp = head;
+    int nomor = 1;
+    while (temp != NULL) {
+        string jamStr, menitStr;
 
-    cout << "Data Kendaraan berhasil ditambahkan\n";
+        if (temp->masuk.jam < 10){
+            jamStr = "0" + to_string(temp->masuk.jam);
+        }
+        else{
+            jamStr = to_string(temp->masuk.jam);
+        }
+
+        if (temp->masuk.menit < 10){
+            menitStr = "0" + to_string(temp->masuk.menit);
+        }
+        else{
+            menitStr = to_string(temp->masuk.menit);
+        }
+
+        cout << nomor << ". Plat: " << temp->platNomor;
+        cout << " | Jenis: " << temp->jenis;
+        cout << " | Masuk: " << jamStr << ":" << menitStr;
+        cout << " | ID Parkir: " << temp->idParkir << endl;
+        temp = temp->next;
+        nomor++;
+    }
 }
 
 
@@ -116,13 +163,13 @@ void kendaraanKeluar(dataKendaraan parkir[], int &jumlah){
 
     int durasi = hitungDurasiJam(parkir[index].masuk, jamKeluar, menitKeluar);
 
-    int tarif = (parkir[index].jenisKendaraan == "motor") ? 2000 : 5000;
+    int tarif = (parkir[index].jenis == "motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
 
     cout << "\n========== STRUK PARKIR ==========\n";
     cout << "ID Parkir : " << parkir[index].idParkir << endl;
     cout << "Plat      : " << parkir[index].platNomor << endl;
-    cout << "Jenis     : " << parkir[index].jenisKendaraan << endl;
+    cout << "Jenis     : " << parkir[index].jenis << endl;
     cout << "Durasi    : " << durasi << " jam\n";
     cout << "Bayar     : Rp " << totalBayar << endl;
     cout << "==================================\n";
@@ -134,7 +181,6 @@ void kendaraanKeluar(dataKendaraan parkir[], int &jumlah){
 
     cout << "Kendaraan berhasil keluar!\n";
 }
-
 
 int main() {
     dataKendaraan parkir[100];
@@ -153,10 +199,13 @@ while (true)
     cin >> pilihan;
 
     if(pilihan == 1){
-        tambahKendaraan(parkir, jumlah);
+        tambahKendaraan();
+    }
+    else if(pilihan == 2){
+        daftarKendaraan();
     }
     else if(pilihan == 4){
-    kendaraanKeluar(parkir, jumlah);
+        kendaraanKeluar(parkir, jumlah);
     }
     else if (pilihan == 0){
         break;
