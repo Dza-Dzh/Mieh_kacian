@@ -55,7 +55,8 @@ void tambahKendaraan(){
 
     cout << "=== INPUT KENDARAAN MASUK ===" << endl;
     cout << "Masukkan plat nomor kendaraan (Contoh: ABC 1234 XYZ): ";
-    cin >> node->platNomor;
+    cin.ignore();
+    getline(cin, node->platNomor);
 
     cout << "Pilih jenis kendaraan : " << endl;
     int pilihanJenis;
@@ -75,10 +76,10 @@ void tambahKendaraan(){
     int inputJam;
     cin >> inputJam;
 
-    if(inputJam >= 0 && inputJam <= 23){
-        node->masuk.jam = inputJam;
-    } else {
+    if(cin.fail() || inputJam < 0 || inputJam > 23) {
         cout << "Jam tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(10000, '\n');
         return;
     }
 
@@ -86,12 +87,15 @@ void tambahKendaraan(){
     int inputMenit;
     cin >> inputMenit;
 
-    if(inputMenit >= 0 && inputMenit <= 59){
-        node->masuk.menit = inputMenit;
-    } else {
+    if(cin.fail() || inputMenit < 0 || inputMenit > 59) {
         cout << "Menit tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(10000, '\n');
         return;
     };
+
+    node->masuk.jam = inputJam;
+    node->masuk.menit = inputMenit;
 
     node->idParkir = generateID();
     node->next = NULL;
@@ -233,42 +237,38 @@ void kendaraanKeluar(){
 int main() {
     int jumlah = 0;
     int pilihan;
+    
 
-    while (true)
-    {
-        cout << "\n==== Sistem Parkir Kendaraan ====\n";
-        cout << "1. Tambah kendaraan masuk\n";
-        cout << "2. Tampilkan kendaraan\n";
-        cout << "3. Ubah data kendaraan\n";
-        cout << "4. Kendaraan keluar\n";
-        cout << "5. Cari Kendaraan\n";
-        cout << "6. Statistik parkir\n";
-        cout << "7. Riwayat parkir\n";
-        cout << "0. Keluar\n";
-        cout << "Pilih opsi nomor (0-7): ";
+while (true)
+{
+    cout << "\n==== Sistem Parkir Kendaraan ====\n";
+    cout << "1. Tambah kendaraan masuk\n";
+    cout << "2. Tampilkan kendaraan\n";
+    cout << "3. Ubah data kendaraan\n";
+    cout << "4. Kendaraan keluar\n";
+    cout << "0. Keluar\n";
 
+    while(true) {
+        cout << "Pilih opsi nomor (0-4): ";
         cin >> pilihan;
-
-        if(pilihan == 1){
-            tambahKendaraan();
-        }
-        else if(pilihan == 2){
-            daftarKendaraan();
-        }
-        else if(pilihan == 3){
-            ubahKendaraan();
-        }
-        else if(pilihan == 4){
-            kendaraanKeluar();
-        }
-        else if(pilihan == 5){
-        }
-        else if(pilihan == 6){
-        }
-        else if(pilihan == 7){
-        }
-        else if (pilihan == 0){
+        if(cin.fail() || pilihan < 0 || pilihan > 4) {
+            cout << "Pilihan tidak valid! Coba lagi." << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+        } else {
             break;
         }
+    }
+    if(pilihan == 1){
+        tambahKendaraan();
+    }
+    else if(pilihan == 2){
+        daftarKendaraan();
+    }
+    else if(pilihan == 4){
+        kendaraanKeluar(parkir, jumlah);
+    }
+    else if (pilihan == 0){
+        break;
     }
 }
