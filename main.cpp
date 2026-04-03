@@ -93,6 +93,9 @@ void tambahKendaraan(){
         return;
     };
 
+    node->masuk.jam = inputJam;
+    node->masuk.menit = inputMenit;
+
     node->idParkir = generateID();
     node->next = NULL;
 
