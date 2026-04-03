@@ -34,13 +34,13 @@ int cariIndex(dataKendaraan parkir[], int jumlah, string plat){
 int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar){
     int totalMasuk = masuk.jam * 60 + masuk.menit;
     int totalKeluar = jamKeluar * 60 + menitKeluar;
+
+    if(totalKeluar < totalMasuk){
+        totalKeluar += 24 * 60;
+    }
     int selisihMenit = totalKeluar - totalMasuk;
 
-    int durasiJam = selisihMenit / 60;
-    int durasiMenit = selisihMenit % 60;
-
-    if(durasiMenit > 30)
-        durasiJam++;
+    int durasiJam = (selisihMenit + 59) / 60;
 
     if(durasiJam <= 0)
         durasiJam = 1;
@@ -54,7 +54,7 @@ void tambahKendaraan(){
     dataKendaraan *node = new dataKendaraan();
 
     cout << "=== INPUT KENDARAAN MASUK ===" << endl;
-    cout << "Masukkan plat nomor kendaraan (Contoh: ABC 1234 XYZ): ";
+    cout << "Masukkan plat nomor kendaraan (Contoh: AB 1234 XYZ): ";
     cin.ignore();
     getline(cin, node->platNomor);
 
@@ -70,6 +70,7 @@ void tambahKendaraan(){
     }
     else{
         cout << "Input tidak valid" << endl;
+        return;
     }
 
     cout << "Masukkan waktu jam masuk (0-23): ";
@@ -82,6 +83,7 @@ void tambahKendaraan(){
         cin.ignore(10000, '\n');
         return;
     }
+    node->masuk.jam = inputJam;
 
     cout << "Masukkan waktu menit masuk (0-59): ";
     int inputMenit;
@@ -94,8 +96,10 @@ void tambahKendaraan(){
         return;
     };
 
-    node->masuk.jam = inputJam;
     node->masuk.menit = inputMenit;
+
+   
+    
 
     node->idParkir = generateID();
     node->next = NULL;
@@ -167,7 +171,9 @@ void ubahKendaraan() {
             cout << "Data ditemukan!" << endl;
 
             string platNomorBaru;
-            cout << "Masukkan plat nomor baru: "; cin >> platNomorBaru;
+            cout << "Masukkan plat nomor baru: ";   
+            cin.ignore();
+            getline(cin, platNomorBaru);
             temp->platNomor = platNomorBaru;
 
             int pilihanJenis;
@@ -200,11 +206,16 @@ void kendaraanKeluar(){
     string plat;
     cout << "Masukkan plat nomor: ";
     cin >> plat;
-
+    if (temp ->platNomor != plat) {
+            cout << "Data tidak ditemukan!" << endl;
+            return;
+    }
+    else if (temp->platNomor == plat){
      while (temp != NULL && temp->platNomor != plat) {
         prev = temp;
         temp = temp->next;
     }
+    
 
     int jamKeluar, menitKeluar;
     cout << "Jam keluar   : "; cin >> jamKeluar;
@@ -233,6 +244,7 @@ void kendaraanKeluar(){
     delete temp;
     cout << "Kendaraan berhasil keluar!\n";
 }
+}
 
 int main() {
     int jumlah = 0;
@@ -246,12 +258,15 @@ while (true)
     cout << "2. Tampilkan kendaraan\n";
     cout << "3. Ubah data kendaraan\n";
     cout << "4. Kendaraan keluar\n";
+    cout << "5. Cari kendaraan\n";
+    cout << "6. Statistik parkir\n";
+    cout << "7. Riwayat parkir\n";
     cout << "0. Keluar\n";
 
     while(true) {
-        cout << "Pilih opsi nomor (0-4): ";
+        cout << "Pilih opsi nomor (0-7): ";
         cin >> pilihan;
-        if(cin.fail() || pilihan < 0 || pilihan > 4) {
+        if(cin.fail() || pilihan < 0 || pilihan > 7) {
             cout << "Pilihan tidak valid! Coba lagi." << endl;
             cin.clear();
             cin.ignore(10000, '\n');
@@ -265,10 +280,14 @@ while (true)
     else if(pilihan == 2){
         daftarKendaraan();
     }
+    else if(pilihan == 3){
+        ubahKendaraan();
+    }
     else if(pilihan == 4){
-        kendaraanKeluar(parkir, jumlah);
+        kendaraanKeluar();
     }
     else if (pilihan == 0){
         break;
     }
+}
 }
