@@ -34,11 +34,12 @@ int cariIndex(dataKendaraan parkir[], int jumlah, string plat){
 int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar){
     int totalMasuk = masuk.jam * 60 + masuk.menit;
     int totalKeluar = jamKeluar * 60 + menitKeluar;
-
     int selisihMenit = totalKeluar - totalMasuk;
-    int durasiJam = selisihMenit / 60;
 
-    if(selisihMenit % 60 != 0)
+    int durasiJam = selisihMenit / 60;
+    int durasiMenit = selisihMenit % 60;
+
+    if(durasiMenit > 30)
         durasiJam++;
 
     if(durasiJam <= 0)
@@ -143,72 +144,131 @@ void daftarKendaraan() {
     }
 }
 
+void ubahKendaraan() {
+    cout << "\n=== UBAH DATA KENDARAAN ===\n";
+    if (head == NULL) {
+        cout << "Parkiran kosong.\n";
+        return;
+    }
 
-void kendaraanKeluar(dataKendaraan parkir[], int &jumlah){
+    int cariID;
+    cout << "Masukkan ID parkir yang datanya ingin diubah: ";
+    cin >> cariID;
+
+    dataKendaraan* temp = head;
+    bool ketemu = false;
+
+    while (temp != NULL) {
+        if (temp->idParkir == cariID) {
+            cout << "Data ditemukan!" << endl;
+
+            string platNomorBaru;
+            cout << "Masukkan plat nomor baru: "; cin >> platNomorBaru;
+            temp->platNomor = platNomorBaru;
+
+            int pilihanJenis;
+            cout << "Ubah Jenis Kendaraan (1: Motor, 2: Mobil): "; cin >> pilihanJenis;
+            if (pilihanJenis == 1 || pilihanJenis == 2) {
+                temp->jenis = jenisKendaraan[pilihanJenis - 1];
+                cout << ">> Data berhasil diperbarui!\n";
+            } else {
+                cout << ">> Pilihan tidak valid, perubahan dibatalkan.\n";
+            }
+
+            ketemu = true;
+            break;
+        }
+        temp = temp->next;
+    }
+
+    if (!ketemu) cout << ">> ID parkir " << cariID << " tidak ditemukan.\n";
+}
+
+void kendaraanKeluar(){
+    dataKendaraan *temp = head;
+    dataKendaraan *prev = NULL;
     cout << "\n=== CHECK OUT PARKIR ===\n";
+    if (head == NULL) {
+        cout << "Parkiran kosong" << endl;
+        return;
+    };
+
     string plat;
     cout << "Masukkan plat nomor: ";
     cin >> plat;
 
-    int index = cariIndex(parkir, jumlah, plat);
-
-    if(index == -1){
-        cout << "Kendaraan tidak ditemukan!\n";
-        return;
+     while (temp != NULL && temp->platNomor != plat) {
+        prev = temp;
+        temp = temp->next;
     }
 
     int jamKeluar, menitKeluar;
     cout << "Jam keluar   : "; cin >> jamKeluar;
     cout << "Menit keluar : "; cin >> menitKeluar;
 
-    int durasi = hitungDurasiJam(parkir[index].masuk, jamKeluar, menitKeluar);
+    int durasi = hitungDurasiJam(temp->masuk, jamKeluar, menitKeluar);
 
-    int tarif = (parkir[index].jenis == "motor") ? 2000 : 5000;
+    int tarif = (temp->jenis == "motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
 
     cout << "\n========== STRUK PARKIR ==========\n";
-    cout << "ID Parkir : " << parkir[index].idParkir << endl;
-    cout << "Plat      : " << parkir[index].platNomor << endl;
-    cout << "Jenis     : " << parkir[index].jenis << endl;
+    cout << "ID Parkir : " << temp->idParkir << endl;
+    cout << "Plat      : " << temp->platNomor << endl;
+    cout << "Jenis     : " << temp->jenis << endl;
     cout << "Durasi    : " << durasi << " jam\n";
     cout << "Bayar     : Rp " << totalBayar << endl;
     cout << "==================================\n";
 
-    for(int i=index;i<jumlah-1;i++)
-        parkir[i] = parkir[i+1];
+    if (prev == NULL) {
+        head = temp->next;
+    }
+    else{
+        prev->next = temp->next;
+    }
 
-    jumlah--;
-
+    delete temp;
     cout << "Kendaraan berhasil keluar!\n";
 }
 
 int main() {
-    dataKendaraan parkir[100];
     int jumlah = 0;
     int pilihan;
-while (true)
-{
-    cout << "\n==== Sistem Parkir Kendaraan ====\n";
-    cout << "1. Tambah kendaraan masuk\n";
-    cout << "2. Tampilkan kendaraan\n";
-    cout << "3. Ubah data kendaraan\n";
-    cout << "4. Kendaraan keluar\n";
-    cout << "0. Keluar\n";
-    cout << "Pilih opsi nomor (0-4): ";
 
-    cin >> pilihan;
+    while (true)
+    {
+        cout << "\n==== Sistem Parkir Kendaraan ====\n";
+        cout << "1. Tambah kendaraan masuk\n";
+        cout << "2. Tampilkan kendaraan\n";
+        cout << "3. Ubah data kendaraan\n";
+        cout << "4. Kendaraan keluar\n";
+        cout << "5. Cari Kendaraan\n";
+        cout << "6. Statistik parkir\n";
+        cout << "7. Riwayat parkir\n";
+        cout << "0. Keluar\n";
+        cout << "Pilih opsi nomor (0-7): ";
 
-    if(pilihan == 1){
-        tambahKendaraan();
+        cin >> pilihan;
+
+        if(pilihan == 1){
+            tambahKendaraan();
+        }
+        else if(pilihan == 2){
+            daftarKendaraan();
+        }
+        else if(pilihan == 3){
+            ubahKendaraan();
+        }
+        else if(pilihan == 4){
+            kendaraanKeluar();
+        }
+        else if(pilihan == 5){
+        }
+        else if(pilihan == 6){
+        }
+        else if(pilihan == 7){
+        }
+        else if (pilihan == 0){
+            break;
+        }
     }
-    else if(pilihan == 2){
-        daftarKendaraan();
-    }
-    else if(pilihan == 4){
-        kendaraanKeluar(parkir, jumlah);
-    }
-    else if (pilihan == 0){
-        break;
-    }
-}
 }
