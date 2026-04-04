@@ -15,5 +15,9 @@ struct dataKendaraan{
     string jenis;
     int idParkir;
     waktu masuk;
+    int biaya;
     dataKendaraan* next;
 };
+
+
+dataKendaraan *history = NULL;
