@@ -19,6 +19,13 @@ void ubahKendaraan() {
     cout << "Masukkan ID parkir yang datanya ingin diubah: ";
     cin >> cariID;
 
+    if(cin.fail() || cariID <= 0) {
+        cout << "ID tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(9999, '\n');
+        return;
+    }
+
     dataKendaraan* temp = head;
     bool ketemu = false;
 
@@ -37,8 +44,11 @@ void ubahKendaraan() {
             if (pilihanJenis == 1 || pilihanJenis == 2) {
                 temp->jenis = jenisKendaraan[pilihanJenis - 1];
                 cout << ">> Data berhasil diperbarui!\n";
-            } else {
-                cout << ">> Pilihan tidak valid, perubahan dibatalkan.\n";
+            } else if(cin.fail() || pilihanJenis < 1 || pilihanJenis > 2) {
+                 cout << "Pilihan tidak valid, perubahan dibatalkan.\n";
+                 cin.clear();
+                 cin.ignore(9999, '\n');
+                 return;
             }
 
             ketemu = true;

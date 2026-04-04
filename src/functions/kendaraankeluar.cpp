@@ -18,9 +18,8 @@ void kendaraanKeluar(){
     }
 
     string plat;
-    cout << "Masukkan plat nomor: ";
-    cin.ignore();
-    getline(cin, plat);
+    cout << "Masukkan nomor plat kendaraan:  ";
+    cin >> plat;
 
     while (temp != NULL && temp->platNomor != plat) {
         prev = temp;
@@ -34,8 +33,19 @@ void kendaraanKeluar(){
 
     int jamKeluar, menitKeluar;
     cout << "Jam keluar   : "; cin >> jamKeluar;
+    if(cin.fail() || jamKeluar < 0 || jamKeluar > 23) {
+        cout << "Jam tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(9999, '\n');
+        return;
+    }
     cout << "Menit keluar : "; cin >> menitKeluar;
-
+    if(cin.fail() || menitKeluar < 0 || menitKeluar > 59) {
+        cout << "Menit tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(9999, '\n');
+        return;
+    }
     int durasi = hitungDurasiJam(temp->masuk, jamKeluar, menitKeluar);
     int tarif = (temp->jenis == "motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
