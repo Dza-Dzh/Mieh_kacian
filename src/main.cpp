@@ -60,6 +60,12 @@ while (true)
     else if(pilihan == 7){
         riwayatKendaraan();
     }
+    else if(pilihan == 5){
+        cariKendaraan();
+    }
+    else if(pilihan == 7){
+        riwayatKendaraan();
+    }
     else if (pilihan == 0){
         break;
     }
