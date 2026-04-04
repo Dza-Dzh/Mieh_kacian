@@ -7,6 +7,8 @@
 #include "functions/ubahkendaraan.cpp"
 #include "functions/kendaraankeluar.cpp"
 #include "functions/statistikparkir.cpp"
+#include "functions/riwayatkendaraan.cpp"
+#include "functions/carikendaraan.cpp"
 using namespace std;
 
 int main() {
@@ -47,10 +49,16 @@ while (true)
         ubahKendaraan();
     }
     else if(pilihan == 4){
-        kendaraanKeluar();
+       kendaraanKeluar();
+    }
+    else if(pilihan == 5){
+        cariKendaraan();
     }
     else if(pilihan == 6){
         statistikParkir();
+    }
+    else if(pilihan == 7){
+        riwayatKendaraan();
     }
     else if (pilihan == 0){
         break;

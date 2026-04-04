@@ -2,10 +2,14 @@
 #include <string>
 
 using namespace std;
+
 void daftarKendaraan() {
     cout << "\n=== DAFTAR KENDARAAN TERPARKIR ===\n";
     if (head == NULL) {
         cout << "Parkiran kosong.\n";
+        cout << "\nTekan Enter untuk kembali ke menu utama...";
+            cin.ignore();
+            cin.get();
         return;
     }
 
@@ -27,18 +31,16 @@ void daftarKendaraan() {
         else{
             menitStr = to_string(temp->masuk.menit);
         }
-        cout << nomor << ". ID Parkir: " << temp->idParkir;
-        cout << " | Plat: " << temp->platNomor;
+
+        cout << nomor << ". Plat: " << temp->platNomor;
         cout << " | Jenis: " << temp->jenis;
-        cout << " | Masuk: " << jamStr << ":" << menitStr << endl;
-      
+        cout << " | Masuk: " << jamStr << ":" << menitStr;
+        cout << " | ID Parkir: " << temp->idParkir << endl;
         temp = temp->next;
         nomor++;
-
-       cout << "=============================\n";
-        cout << "Tekan Enter untuk kembali ke menu utama...";
-        cin.ignore();
-        cin.get();
-
-    }
+       
+}
+  cout << "\nTekan Enter untuk kembali ke menu utama...";
+    cin.ignore();
+    cin.get();
 }

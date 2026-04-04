@@ -33,4 +33,4 @@ int hitungDurasiJam(waktu masuk, int jamKeluar, int menitKeluar){
     return durasiJam;
 }
 
-dataKendaraan *head = NULL;
+

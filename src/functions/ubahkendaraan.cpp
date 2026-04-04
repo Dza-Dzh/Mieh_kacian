@@ -9,6 +9,9 @@ void ubahKendaraan() {
     cout << "\n=== UBAH DATA KENDARAAN ===\n";
     if (head == NULL) {
         cout << "Parkiran kosong.\n";
+        cout << "\nTekan Enter untuk kembali ke menu utama...";
+            cin.ignore();
+            cin.get();
         return;
     }
 
