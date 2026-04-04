@@ -34,7 +34,7 @@ while (true)
         if(cin.fail() || pilihan < 0 || pilihan > 7) {
             cout << "Pilihan tidak valid! Coba lagi." << endl;
             cin.clear();
-            cin.ignore(10000, '\n');
+            cin.ignore(9999, '\n');
         } else {
             break;
         }
@@ -56,12 +56,6 @@ while (true)
     }
     else if(pilihan == 6){
         statistikParkir();
-    }
-    else if(pilihan == 7){
-        riwayatKendaraan();
-    }
-    else if(pilihan == 5){
-        cariKendaraan();
     }
     else if(pilihan == 7){
         riwayatKendaraan();

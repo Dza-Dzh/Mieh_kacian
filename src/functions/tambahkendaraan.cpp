@@ -22,8 +22,10 @@ void tambahKendaraan(){
     if (pilihanJenis == 1 or pilihanJenis == 2){
         node->jenis = jenisKendaraan[pilihanJenis - 1];
     }
-    else{
-        cout << "Input tidak valid" << endl;
+    else if(cin.fail() || pilihanJenis < 1 || pilihanJenis > 2){
+        cout << "Pilihan tidak valid! Coba lagi." << endl;
+        cin.clear();
+        cin.ignore(9999, '\n');
         return;
     }
 
@@ -34,7 +36,7 @@ void tambahKendaraan(){
     if(cin.fail() || inputJam < 0 || inputJam > 23) {
         cout << "Jam tidak valid! Coba lagi." << endl;
         cin.clear();
-        cin.ignore(10000, '\n');
+        cin.ignore(9999, '\n');
         return;
     }
     node->masuk.jam = inputJam;
@@ -46,15 +48,13 @@ void tambahKendaraan(){
     if(cin.fail() || inputMenit < 0 || inputMenit > 59) {
         cout << "Menit tidak valid! Coba lagi." << endl;
         cin.clear();
-        cin.ignore(10000, '\n');
+        cin.ignore(9999, '\n');
         return;
     };
 
     node->masuk.menit = inputMenit;
 
    
-    
-
     node->idParkir = generateID();
     node->next = NULL;
 
