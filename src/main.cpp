@@ -86,10 +86,6 @@ void tambahKendaraan(){
     };
 
     node->masuk.menit = inputMenit;
-
-   
-    
-
     node->idParkir = generateID();
     node->next = NULL;
 
@@ -221,7 +217,7 @@ void kendaraanKeluar(){
     jumlahRiwayat++;
 
     int durasi = hitungDurasiJam(temp->masuk, jamKeluar, menitKeluar);
-    int tarif = (temp->jenis == "motor") ? 2000 : 5000;
+    int tarif = (temp->jenis == "Motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
 
     cout << "\n========== STRUK PARKIR ==========\n";
@@ -241,6 +237,51 @@ void kendaraanKeluar(){
     delete temp;
     cout << "Kendaraan berhasil keluar!\n";
 }
+
+void cariKendaraan(){
+    cout << "\n=== CARI KENDARAAN ===\n";
+
+    if(head == NULL){
+        cout << "Parkiran kosong.\n";
+        return;
+    }
+
+    string plat;
+    cout << "Masukkan plat nomor yang dicari: ";
+    cin.ignore();
+    getline(cin, plat);
+
+    dataKendaraan *temp = head;
+    bool ditemukan = false;
+    int nomor = 1;
+
+    while(temp != NULL){
+        if(temp->platNomor == plat){
+            cout << "\n>> Kendaraan ditemukan!\n";
+            cout << "Nomor urut : " << nomor << endl;
+            cout << "ID Parkir  : " << temp->idParkir << endl;
+            cout << "Plat Nomor : " << temp->platNomor << endl;
+            cout << "Jenis      : " << temp->jenis << endl;
+
+            cout << "Waktu masuk: ";
+            if(temp->masuk.jam < 10) cout << "0";
+            cout << temp->masuk.jam << ":";
+            if(temp->masuk.menit < 10) cout << "0";
+            cout << temp->masuk.menit << endl;
+
+            ditemukan = true;
+            break;
+        }
+
+        temp = temp->next;
+        nomor++;
+    }
+
+    if(!ditemukan){
+        cout << "Kendaraan dengan plat \"" << plat << "\" tidak ditemukan.\n";
+    }
+}
+
 
 void riwayatKendaraan(){
     cout << "\n=== RIWAYAT KENDARAAN ===\n";
@@ -312,6 +353,9 @@ while (true)
     }
     else if(pilihan == 4){
         kendaraanKeluar();
+    }
+    else if(pilihan == 5){
+        cariKendaraan();
     }
     else if(pilihan == 7){
         riwayatKendaraan();
