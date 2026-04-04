@@ -1,22 +1,9 @@
 #include <iostream>
 #include <string>
-
+#include "data/struct.cpp"
 using namespace std;
 
-string jenisKendaraan[2] = {"motor", "mobil"};
 
-struct waktu{
-    int jam;
-    int menit;
-};
-
-struct dataKendaraan{
-    string platNomor;
-    string jenis;
-    int idParkir;
-    waktu masuk;
-    dataKendaraan* next;
-};
 
 int generateID() {
     static int IDselanjutnya = 1;
