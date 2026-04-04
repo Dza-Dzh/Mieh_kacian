@@ -3,6 +3,8 @@
 #include "data/struct.cpp"
 using namespace std;
 
+dataRiwayat riwayat[100];
+int jumlahRiwayat = 0;
 
 
 int generateID() {
@@ -184,32 +186,41 @@ void ubahKendaraan() {
 void kendaraanKeluar(){
     dataKendaraan *temp = head;
     dataKendaraan *prev = NULL;
+
     cout << "\n=== CHECK OUT PARKIR ===\n";
     if (head == NULL) {
         cout << "Parkiran kosong" << endl;
         return;
-    };
+    }
 
     string plat;
     cout << "Masukkan plat nomor: ";
-    cin >> plat;
-    if (temp ->platNomor != plat) {
-            cout << "Data tidak ditemukan!" << endl;
-            return;
-    }
-    else if (temp->platNomor == plat){
-     while (temp != NULL && temp->platNomor != plat) {
+    cin.ignore();
+    getline(cin, plat);
+
+    while (temp != NULL && temp->platNomor != plat) {
         prev = temp;
         temp = temp->next;
     }
-    
+
+    if (temp == NULL) {
+        cout << "Data tidak ditemukan!" << endl;
+        return;
+    }
 
     int jamKeluar, menitKeluar;
     cout << "Jam keluar   : "; cin >> jamKeluar;
     cout << "Menit keluar : "; cin >> menitKeluar;
 
-    int durasi = hitungDurasiJam(temp->masuk, jamKeluar, menitKeluar);
+    riwayat[jumlahRiwayat].platNomor = temp->platNomor;
+    riwayat[jumlahRiwayat].jenis = temp->jenis;
+    riwayat[jumlahRiwayat].idParkir = temp->idParkir;
+    riwayat[jumlahRiwayat].masuk = temp->masuk;
+    riwayat[jumlahRiwayat].keluar.jam = jamKeluar;
+    riwayat[jumlahRiwayat].keluar.menit = menitKeluar;
+    jumlahRiwayat++;
 
+    int durasi = hitungDurasiJam(temp->masuk, jamKeluar, menitKeluar);
     int tarif = (temp->jenis == "motor") ? 2000 : 5000;
     int totalBayar = durasi * tarif;
 
@@ -223,14 +234,43 @@ void kendaraanKeluar(){
 
     if (prev == NULL) {
         head = temp->next;
-    }
-    else{
+    } else {
         prev->next = temp->next;
     }
 
     delete temp;
     cout << "Kendaraan berhasil keluar!\n";
 }
+
+void riwayatKendaraan(){
+    cout << "\n=== RIWAYAT KENDARAAN ===\n";
+
+    if(jumlahRiwayat == 0){
+        cout << "Belum ada data\n";
+        return;
+    }
+
+    for(int i = 0; i < jumlahRiwayat; i++){
+        cout << i+1 << ". Plat   : " << riwayat[i].platNomor << endl;
+        cout << "   Jenis  : " << riwayat[i].jenis << endl;
+        cout << "   ID     : " << riwayat[i].idParkir << endl;
+
+        cout << "   Masuk  : ";
+        if(riwayat[i].masuk.jam < 10) cout << "0";
+        cout << riwayat[i].masuk.jam << ":";
+
+        if(riwayat[i].masuk.menit < 10) cout << "0";
+        cout << riwayat[i].masuk.menit << endl;
+
+        cout << "   Keluar : ";
+        if(riwayat[i].keluar.jam < 10) cout << "0";
+        cout << riwayat[i].keluar.jam << ":";
+
+        if(riwayat[i].keluar.menit < 10) cout << "0";
+        cout << riwayat[i].keluar.menit << endl;
+
+        cout << "----------------------\n";
+    }
 }
 
 int main() {
@@ -272,6 +312,9 @@ while (true)
     }
     else if(pilihan == 4){
         kendaraanKeluar();
+    }
+    else if(pilihan == 7){
+        riwayatKendaraan();
     }
     else if (pilihan == 0){
         break;

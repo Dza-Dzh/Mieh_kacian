@@ -17,3 +17,11 @@ struct dataKendaraan{
     waktu masuk;
     dataKendaraan* next;
 };
+
+struct dataRiwayat{
+    string platNomor;
+    string jenis;
+    int idParkir;
+    waktu masuk;
+    waktu keluar;
+};
