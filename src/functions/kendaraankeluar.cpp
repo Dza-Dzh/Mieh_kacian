@@ -19,7 +19,7 @@ void kendaraanKeluar(){
 
     string plat;
     cout << "Masukkan nomor plat kendaraan:  ";
-    cin >> plat;
+    getline(cin >> ws, plat);
 
     while (temp != NULL && temp->platNomor != plat) {
         prev = temp;
